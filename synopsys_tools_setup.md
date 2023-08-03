@@ -14,6 +14,8 @@
     wsl --shutdown #关闭WSL
     wsl -l -v      #查看WSL的状态
 
+  打开windows商店，搜索并安装Ubuntu 22.04
+
 # synopsys eda工具的下载和准备
 
   可以尝试在这里下载:
@@ -155,8 +157,8 @@
 
   因此我们只要创建一个名为xp0的网口就可以让lmhostid获取一个固定的hostid。运行如下命令:
 
-    ip link add vmnic0 type bridge
-    ip link set vmnic0 addr 00:11:22:33:44:55
+    ip link add xp0 type bridge
+    ip link set xp0 addr 00:11:22:33:44:55
 
   就可以将hostid固定为"00:11:22:33:44:55"。
 
@@ -166,7 +168,7 @@
     - HOST ID Feature     00:11:22:33:44:55
     - HOST Name           通过运行hostname得到
 
-  随后就可以点击生成，并将它拷贝进wsl中。随后我们要对这个文件的前两行进行修改:
+  随后就可以点击生成，并将它拷贝进wsl中，随意放置路径和命名，我把它命名为Synopsys.dat。随后我们要对这个文件的前两行进行修改:
 
   对于第一行，将"SERVER"后的名字替换成hostname(运行hostname命令可以得到)
   对于第二行，将"DEAMON snpslmd"后换成" {scl安装路径}/amd64/bin/snpslmd"
@@ -176,18 +178,113 @@
 # 设置lic环境变量
 
   在.bashrc中加入如下代码:
-
+    
+    export PATH=$PATH:{scl安装路径}/amd64/bin
     export SNPSLMD_LICENSE_FILE=27000@{该机器的hostname}
     export LM_LICENSE_FILE={lic_file的路径}
 
-    alias lmg_scl='lmgrd -c /home/cjw/Synopsys/scl/license/Synopsys.dat' #注意改路径
+    #alias lmg_scl='lmgrd -c $LM_LICENSE_FILE' #注意改路径
   
 # 手动启动lic server
 
+  设置好环境变量后，我们先尝试手动启动lic server。在命令行中运行:
+
+    lmgrd -c $LM_LICENSE_FILE
+
+  通常运行这个都会报错，会报各种缺乏形如libxxxx.so.x的错误。例如：
+
+    error while loading shared libraries: libstdc++.so.6
+
+  这个错误的多少和当前机器装的动态链接库的多少有关。(.so都是各种动态链接库)
+  这个问题在后续启动其它软件时也会遇到，这里统一列出一些解决方法。
+
+  libstdc++.so.6
+
+    sudo apt install libstdc++6
+    sudo apt install lib32stdc++6
+
+  libtiff.so.3
   
+    sudo ln -s /usr/lib/x86_64-linux-gnu/libtiff.so.5 /usr/lib/x86_64-linux-gnu/libtiff.so.3
+    这个解法的原理是已经安装了更新的.5，把它软链接成.3就可以了。
+    如果so.5不在这里，可以运行locate libtiff.so.5找到位置。
 
+  libmng.so.1
+
+    sudo apt-get install libmng2
+    sudo ln -s /usr/lib/x86_64-linux-gnu/libmng.so.2 /usr/lib/x86_64-linux-gnu/libmng.so.1
+
+  其他libxxx.so.x
+
+    尝试执行
+    sudo apt install libxxx-dev
+    就可以安装到对应的链接库
+  
+  lib问题都解决后，再运行
+
+    lmgrd -c $LM_LICENSE_FILE
+
+  可能会出现
+
+    Failed to open the TCP port number in the license
+
+  的问题，这是因为上一个lic server已经启动并占坑了。(虽然它不不能正确提供lic)
+  可以输入
+
+    lmdown
+
+  把服务器关了，然后再次运行。但是lmdown有点慢，可能执行完要等一会才能生效。
+  等不及就在windows里执行wsl --shutdown把linux关了。
+  然后再开一个terminal就重新启动了(但是ip link相关操作就要重新一下)
+
+  如果出现
+
+    lmgrd can't make directory /usr/tmp/.flexlm
+
+  的问题是由于软件没有这个文件的权限，先看看是否有/usr/tmp这个文件夹，没有就创建一个
+  如果/usr/tmp/.flexlm存在，但报了这个错误，则把这个文件的权限改为777.
 
   
+# 设置其他工具的环境变量并启动
 
+  在~/.bashrc中加入:
 
-  
+    export VCS_HOME={vcs安装路径}
+    export VERDI_HOME={verdi安装路径}
+    export NOVAS_HOME=$VERDI_HOME
+    export DC_HOME={dc安装路径}
+    export SYNOPSYS=$DC_HOME
+    export PT_HOME={pt安装路径}
+    export FM_HOME={fm安装路径}
+    
+    export PATH=$PATH:$VCS_HOME/gui/dve/bin
+    export PATH=$PATH:$VCS_HOME/bin
+    export PATH=$PATH:$VERDI_HOME/bin
+    export PATH=$PATH:$DC_HOME/bin
+    export PATH=$PATH:$PT_HOME/bin 
+    export PATH=$PATH:$FM_HOME/bin
+
+  在lic server启动后即可运行各个eda工具，运行它们的命令如下：
+
+  - vcs
+  - verdi
+  - dve
+  - dc_shell
+  - primetime
+  - formality
+
+  启动各个工具时可能会遇到一些问题，这里列出解决方法：
+
+  遇到"unexpected operator":
+
+    sudo dpkg-reconfigure dash 选择No
+    主要是将ubuntu默认的shell链接的dash改成传统的bash
+    lrwxrwxrwx 1 root root 4 8月 11 09:53 /bin/sh -> dash (为修改之前)
+    lrwxrwxrwx 1 root root 4 8月 11 09:53 /bin/sh -> bash
+
+  遇到"/bin/sh: 0: Illegal option -h":
+
+    在ubuntu上，/bin/sh默认是链接到 /bin/dash的，当你从源代码编译软件的时候，dash可能会导致一些错误，因此，把 /bin/sh的链接改为了 /bin/bash即可
+    rm -f /bin/sh
+    ln -s /bin/bash /bin/sh
+    
