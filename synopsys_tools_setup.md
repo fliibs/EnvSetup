@@ -361,4 +361,6 @@
 # wsl镜像的导出和导入
 
 
-  
+  /etc/host下的hostname要和lic server中的hostname一致
+
+  在/etc/wsl.conf中修改hostname和默认的登录用户
