@@ -214,6 +214,12 @@
     sudo apt-get install libmng2
     sudo ln -s /usr/lib/x86_64-linux-gnu/libmng.so.2 /usr/lib/x86_64-linux-gnu/libmng.so.1
 
+  libpng.so.0
+  
+    sudo add-apt-repository ppa:linuxuprising/libpng12
+    sudo apt update
+    sudo apt install libpng12-0
+
   其他libxxx.so.x
 
     尝试执行
@@ -287,4 +293,72 @@
     在ubuntu上，/bin/sh默认是链接到 /bin/dash的，当你从源代码编译软件的时候，dash可能会导致一些错误，因此，把 /bin/sh的链接改为了 /bin/bash即可
     rm -f /bin/sh
     ln -s /bin/bash /bin/sh
+
+# spyglass的安装
+
+
+# 自动启动lic server
+
+  之前，我们测试了手动启动lic server成功，现在，我们要把手动启动lic server改为开机自动启动。
+
+  执行 ls /lib/systemd/system | grep local 你可以看到有很多启动脚本，其中就有我们需要的 rc-local.service
+
+  打开 rc-local.service脚本内容，内容如下：
+
+    #  SPDX-License-Identifier: LGPL-2.1-or-later
+    #
+    #  This file is part of systemd.
+    #
+    #  systemd is free software; you can redistribute it and/or modify it
+    #  under the terms of the GNU Lesser General Public License as published by
+    #  the Free Software Foundation; either version 2.1 of the License, or
+    #  (at your option) any later version.
     
+    # This unit gets pulled automatically into multi-user.target by
+    # systemd-rc-local-generator if /etc/rc.local is executable.
+    [Unit]
+    Description=/etc/rc.local Compatibility
+    Documentation=man:systemd-rc-local-generator(8)
+    ConditionFileIsExecutable=/etc/rc.local
+    After=network.target
+    
+    [Service]
+    Type=forking
+    ExecStart=/etc/rc.local start
+    TimeoutSec=0
+    RemainAfterExit=yes
+    GuessMainPID=no
+
+  一般正常的启动文件主要分成三部分
+
+  [Unit] 段: 启动顺序与依赖关系
+  [Service] 段: 启动行为,如何启动，启动类型
+  [Install] 段: 定义如何安装这个配置文件，即怎样做到开机启动
+  
+  可以看出，/etc/rc.local 的启动顺序是在网络后面，但是显然它少了 Install 段，也就没有定义如何做到开机启动，所以显然这样配置是无效的。 因此我们就需要在后面帮他加上 [Install] 段:
+
+    [Install]
+    WantedBy=multi-user.target  
+    Alias=rc-local.service
+
+  这个文件定义了开机后会自动执行/etc/rc.local这个文件。但系统默认是没有这个文件的，我们要去新建这个文件，并加入如下代码:
+
+    #!/bin/sh
+  
+    ip link add xp0 type bridge
+    ip link set xp0 addr 00:15:5d:f8:ec:85
+    
+    rm -rf /var/tmp/*
+    {scl安装路径}/amd64/bin/lmgrd -c {lic文件路径} > {lic server启动log路径}
+
+  如前文所说，加上ip link相关操作，设定好新网口。
+  
+  rm -rf /var/tmp/*是删除所有lock file，防止lic server启动不正常。如果上一次linux非正常关闭，可能会遗留lock文件，导致lic server无法启动。
+  
+  在这个文件中，由于是开机启动执行，所以所有环境变量都还没定义，就直接用绝对路径来指定命令和文件。这里指定了一个log文件路径，放哪儿都行，方便debug，我是指到home路径下。
+
+
+# wsl镜像的导出和导入
+
+
+  
