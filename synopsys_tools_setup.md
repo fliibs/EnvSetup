@@ -7,6 +7,8 @@
 
     wsl --update
 
+  如果这个命令不能正确升级wsl，说明wsl太老了（可能是wsl1）。在windows商店中搜索wsl并安装。
+
   来升级wsl，保证wsl是新版。一些旧版的wsl(例如win10默认带着的)，没有自带的X server，在linux里面打开gui会显示找不到DISPLAY。
 
   wsl中常用的命令:
@@ -14,7 +16,9 @@
     wsl --shutdown #关闭WSL
     wsl -l -v      #查看WSL的状态
 
-  打开windows商店，搜索并安装Ubuntu 22.04
+  打开windows商店，搜索并安装Ubuntu 22.04。
+
+  启动wsl时可能会遇到hypervisor的错误，在bios和windows可选功能中打开对应设置即可。
 
 # synopsys eda工具的下载和准备
 
@@ -357,10 +361,44 @@
   
   在这个文件中，由于是开机启动执行，所以所有环境变量都还没定义，就直接用绝对路径来指定命令和文件。这里指定了一个log文件路径，放哪儿都行，方便debug，我是指到home路径下。
 
+  最后，特别注意，将这个文件设为可执行:
+
+    chmod +x /etc/rc.local
+
 
 # wsl镜像的导出和导入
 
+  
+  WSL镜像的导出:
 
-  /etc/host下的hostname要和lic server中的hostname一致
+    wsl --export {image name} {output_file_path}
+    # example:  wsl --export Ubuntu-22.04 D:\Ubuntu-22.04.tar
 
-  在/etc/wsl.conf中修改hostname和默认的登录用户
+  WSL镜像的导入:
+
+    wsl --import {image name} {input_file_path} --version 2
+    # example: wsl --import Ubuntu-22.04 D:\Ubuntu-22.04.tar --version 2
+
+  导入和导出通常会花10+分钟，比较久。
+
+  对于新导入的镜像，如果不做任何配置，那么启动时将会使用windows的hostname作为wsl2虚拟机的hostname.
+  此外，它也会使用windows中的username作为默认的登录用username.
+  
+  因此在启动虚拟机后，要编辑/etc/wsl.conf，修改hostname和默认username.
+
+  在/etc/wsl.conf中，找到network和user段，分别再下方修改hostname和default两个变量（如果没有对应的字段和变量则新增）。
+
+    [network]
+    hostname = {your_hostname}
+    generateHosts = false
+
+    [user]
+    default = {default_user_name}
+    
+  随后重启wsl即可。
+
+  除了在/etc/wsl.conf中修改hostname与lic server中的一致之外。
+
+  /etc/hostname文件中记录的hostname也要和lic server中的hostname一致。
+  因此在导入新镜像以后也要修改这个文件。
+
