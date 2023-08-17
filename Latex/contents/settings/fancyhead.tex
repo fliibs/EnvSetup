@@ -1,0 +1,23 @@
+% !TEX root = ../../main.tex
+
+
+\pagestyle{fancy}
+
+% arabic 阿拉伯数字
+% roman l小写的罗马数字
+% Roman 大写的罗马数字
+% alph 小写字母
+% Alph 大写字母
+
+\pagenumbering{arabic}
+% \fancyhead[L]{\today}
+\fancyhead[R]{\today}
+\fancyhead[C]{Build Your Dreams}
+
+\fancyfoot[L]{}
+\fancyfoot[R]{}
+\fancyfoot[C]{\thepage}
+
+\renewcommand{\headrulewidth}{0.1pt}
+% \renewcommand{\footrulewidth}{0.1pt}
+\renewcommand{\sectionmark}[1]{\markright{\thesection-\ #1}}

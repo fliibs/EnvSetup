@@ -1,0 +1,58 @@
+% !TEX root = ../../main.tex
+
+\clearpage
+\section{Figure}
+
+\subsection{插图}
+
+插图功能是利用 \TeX{} 的特定编译程序提供的机制实现的，不同的编译程序支持不同的图
+形方式。有的同学可能听说“\LaTeX{} 只支持 EPS”，事实上这种说法是不准确的。\XeTeX{}
+可以很方便地插入 EPS、PDF、PNG、JPEG 格式的图片。
+
+一般图形都是处在浮动环境中。之所以称为浮动是指最终排版效果图形的位置不一定与源文
+件中的位置对应，这也是刚使用 \LaTeX{} 同学可能遇到的问题。如果要强制固定浮动图形
+的位置，请使用 \pkg{float} 宏包，它提供了 \texttt{[H]} 参数。
+
+\subsubsection{单个图形}
+
+如图~\ref{fig.google} 所示。
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=7cm]{./figure/google.png} \\
+      1.google figure 2.different color % 对图片进行解释
+    \caption{Main name 2} %最终文档中希望显示的图片标题
+    {Stay hungry, stay foolish.}
+   \label{fig.google}
+\end{figure}
+
+\subsubsection{多个图形}
+简单插入多个图形的例子如图~\ref{fig:SRR} 所示。这两个水平并列放置的子图共用一个
+图形计数器，没有各自的子图题。
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[height=2cm]{figure/badge-blue.pdf}
+  \hspace{1cm}
+  \includegraphics[height=2cm]{figure/badge-blue.pdf}
+  \caption{English caption}
+  \label{fig:SRR}
+\end{figure}
+
+如果多个图形相互独立，并不共用一个图形计数器，那么用 \texttt{minipage} 或者
+\texttt{parbox} 就可以，如图~\ref{fig:parallel1} 与图~\ref{fig:parallel2}。
+
+\begin{figure}[ht]
+\begin{minipage}{0.48\textwidth}
+  \centering
+  \includegraphics[height=1.5cm]{figure/name-blue.pdf}
+  \caption{并排第一个图}
+  \label{fig:parallel1}
+\end{minipage}\hfill
+\begin{minipage}{0.48\textwidth}
+  \centering
+  \includegraphics[height=1.5cm]{figure/name-blue.pdf}
+  \caption{并排第二个图}
+  \label{fig:parallel2}
+\end{minipage}
+\end{figure}

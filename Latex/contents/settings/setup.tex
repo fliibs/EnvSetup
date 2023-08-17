@@ -1,0 +1,148 @@
+% !TEX root = ../../main.tex
+
+% \flbssetup{
+%     title = {\huge\textbf{Project \textit{A2} IP \textit{XXX}\\Hardware Design Document}},
+
+%     author = {name},
+% }
+
+% 字体选择
+% \tiny, \scriptsize, \footnotesize, \small, \normalsize, \large, \Large, \LARGE, \huge, \Huge
+% \textbf 加粗
+% \textit 斜体
+
+%层次结构
+% \part {...} %Level -1
+% \chapter {...} %Level 0
+% \section {...} %Level 1
+% \subsection {...} %Level 2
+% \subsubsection {...} %Level 3
+% \paragraph {...} %Level 4
+% \subparagraph {...} %Level 5
+
+% 页面大小
+\usepackage{geometry}
+\geometry{a4paper,scale=0.7}
+
+
+\usepackage{caption}
+\captionsetup{font={scriptsize}}
+\CTEXsetup[format={\Large\bfseries}]{section} % section左对齐
+\CTEXsetup[format={\large\bfseries}]{subsection} % section左对齐
+\CTEXsetup[format={\normalsize\bfseries}]{subsubsection} % section左对齐
+\CTEXsetup[format={\small\bfseries}]{paragraph} % section左对齐
+
+\usepackage{indentfirst}
+\setlength{\parindent}{2em} %缩进的距离（2em 表示缩进 2 个字符位置）
+
+% 字体颜色
+\usepackage{color}
+\usepackage[table,xcdraw]{xcolor}
+% \textcolor{red/blue/green/black/white/cyan/magenta/yellow}{text}
+
+% 字体调整
+\usepackage{fontspec}
+\setmainfont{Times New Roman}
+
+
+% \indent 首行缩进
+% \noindent 不首行缩进
+% \raggedright \raggedleft \centering 对齐设置
+
+\usepackage{graphicx}   % 插入图片用到的宏包
+\usepackage{multirow}   % 插入表格用到的宏包
+% \usepackage{ctex}       % 支持中文
+\usepackage{amsmath}    % 数学公式支持
+
+
+% 缩进
+\usepackage{indentfirst} 
+\setlength{\parindent}{2em} %2em代表首行缩进两个字符
+
+% 页脚页码
+% \pagestyle{empty}
+\usepackage{fancyhdr}            %使用fancyhdr包
+ 
+% 脚注格式
+\usepackage[perpage,bottom,hang]{footmisc}
+
+% 定义图片文件目录与扩展名
+\graphicspath{{figures/}}
+\DeclareGraphicsExtensions{.pdf,.eps,.png,.jpg,.jpeg}
+% 定义图片的序号
+\usepackage{chngcntr}
+\counterwithin{figure}{section}
+
+% 确定浮动对象的位置，可以使用 [H]，强制将浮动对象放到这里（可能效果很差）
+% \usepackage{float}
+
+% 固定宽度的表格
+% \usepackage{tabularx}
+
+% 使用三线表：toprule，midrule，bottomrule。
+\usepackage{booktabs}
+
+% 表格中支持跨行
+\usepackage{multirow}
+
+% 表格中数字按小数点对齐
+\usepackage{dcolumn}
+\newcolumntype{d}[1]{D{.}{.}{#1}}
+
+% 使用长表格
+\usepackage{longtable}
+
+% 附带脚注的表格
+\usepackage{threeparttable}
+
+% 附带脚注的长表格
+\usepackage{threeparttablex}
+
+% 算法环境宏包
+\usepackage[ruled,vlined,linesnumbered]{algorithm2e}
+% \usepackage{algorithm, algorithmicx, algpseudocode}
+
+% 代码环境宏包
+\usepackage{listings}
+\lstnewenvironment{codeblock}[1][]%
+  {\lstset{style=lstStyleCode,#1}}{}
+
+% 直立体数学符号
+\providecommand{\dd}{\mathop{}\!\mathrm{d}}
+\providecommand{\ee}{\mathrm{e}}
+\providecommand{\ii}{\mathrm{i}}
+\providecommand{\jj}{\mathrm{j}}
+
+% 国际单位制宏包
+\usepackage{siunitx}[=v2]
+
+% 定理环境宏包
+\usepackage{ntheorem}
+% \usepackage{amsthm}
+
+% 绘图宏包
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric, arrows}
+
+% 一些文档中用到的 logo
+\usepackage{hologo}
+\providecommand{\XeTeX}{\hologo{XeTeX}}
+\providecommand{\BibLaTeX}{\textsc{Bib}\LaTeX}
+
+% 借用 ltxdoc 里面的几个命令方便写文档
+\DeclareRobustCommand\cs[1]{\texttt{\char`\\#1}}
+\providecommand\pkg[1]{{\sffamily#1}}
+
+% 自定义命令
+
+% E-mail
+\newcommand{\email}[1]{\href{mailto:#1}{\texttt{#1}}}
+
+% hyperref 宏包在最后调用
+\usepackage{hyperref}
+
+
+
+
+
+
