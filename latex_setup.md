@@ -216,4 +216,6 @@ sudo apt-get install ttf-mscorefonts-installer
 Control+Alt+B
 ```
 
+![image](https://github.com/fliibs/EnvSetup/assets/66581448/00014404-c45a-48e8-ac05-25d9c1e2c2e3)
+
 
