@@ -8,7 +8,9 @@
 \renewcommand*\maketitle{%
     \begin{center}% 居中标题
         \bfseries % 默认粗体
-        {\LARGE \@title \par}%
+        {\par}
+        \vskip 40em%
+        {\Huge \@title \par}%
         \vskip 40em%
         {\large
          \lineskip 2em%
