@@ -376,8 +376,8 @@
 
   WSL镜像的导入:
 
-    wsl --import {image name} {input_file_path} --version 2
-    # example: wsl --import Ubuntu-22.04 D:\Ubuntu-22.04.tar --version 2
+    wsl --import {image name} {InstallLocation} {input_file_path} --version 2
+    # example: wsl --import Ubuntu-22.04 D:\ubuntu D:\Ubuntu-22.04.tar --version 2
 
   导入和导出通常会花10+分钟，比较久。
 
@@ -390,7 +390,7 @@
 
     [network]
     hostname = {your_hostname}
-    generateHosts = false
+    generateHosts = true
 
     [user]
     default = {default_user_name}
