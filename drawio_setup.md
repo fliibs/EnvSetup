@@ -6,9 +6,13 @@ vscode不能编辑和渲染visio文件，基于vscode - github的工作会变得
 
 drawio是一款开源的软件，其绘制框图的能力与visio相当，并且可以直接在vscode中渲染，并且通过drawio绘制的框图也可以导入visio（但是反向貌似不支持-.-）
 
+drawio是免费软件，免受许可证烦恼
+# win-drawio的安装
+https://www.drawio.com/
+
 # vscode-drawio的安装
 
-装插件 装插件 不会有人不会装吧 （QAQ）
+装插件
 
 ![image](https://github.com/fliibs/EnvSetup/assets/140520566/3188e940-fb0a-4083-bc58-a8015ce012f9)
 
