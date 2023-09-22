@@ -236,24 +236,24 @@ Control+Alt+B
 
 接下来，针对每个缺失的宏定义包:
 
-  # 例如报错为 "! LaTeX Error: File `ccicons.sty' not found."
-  # 则使用一下命令查找:
-  apt-file -x search '/ccicons.sty$'
-
-  #上述命令输出:
-  # texlive-fonts-extra: /usr/share/texlive/texmf-dist/tex/latex/ccicons/ccicons.sty  
-  #说明这个文件可以在"textlive-fonts-extra中找到，安装这个包即可
-  sudo apt install textlive-fonts-extra
+    # 例如报错为 "! LaTeX Error: File `ccicons.sty' not found."
+    # 则使用一下命令查找:
+    apt-file -x search '/ccicons.sty$'
+  
+    #上述命令输出:
+    # texlive-fonts-extra: /usr/share/texlive/texmf-dist/tex/latex/ccicons/ccicons.sty  
+    #说明这个文件可以在"textlive-fonts-extra中找到，安装这个包即可
+    sudo apt install textlive-fonts-extra
 
 这里是使用latex制作slices常用的包:
 
-  sudo apt install texlive-pictures
-  sudo apt install texlive-latex-extra
-  sudo apt install texlive-fonts-extra
-  sudo apt install texlive-publishers
+    sudo apt install texlive-pictures
+    sudo apt install texlive-latex-extra
+    sudo apt install texlive-fonts-extra
+    sudo apt install texlive-publishers
 
 其它tex工具:
 
-  sudo apt install chktex
+    sudo apt install chktex
 
 
