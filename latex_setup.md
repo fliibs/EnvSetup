@@ -219,3 +219,41 @@ Control+Alt+B
 ![image](https://github.com/fliibs/EnvSetup/assets/66581448/00014404-c45a-48e8-ac05-25d9c1e2c2e3)
 
 
+
+## apt安装和包的安装
+
+可以直接通过apt安装:
+
+  sudo apt install textlive
+
+ 
+
+对于缺失的宏定义包，可以通过如下方法查找和安装:
+
+首先安装apt-file工具，这个工具会在可以安装的apt包中查找是否存在待搜索的文件:
+
+  sudo apt install
+
+接下来，针对每个缺失的宏定义包:
+
+  # 例如报错为 "! LaTeX Error: File `ccicons.sty' not found."
+  # 则使用一下命令查找:
+  apt-file -x search '/ccicons.sty$'
+
+  #上述命令输出:
+  # texlive-fonts-extra: /usr/share/texlive/texmf-dist/tex/latex/ccicons/ccicons.sty  
+  #说明这个文件可以在"textlive-fonts-extra中找到，安装这个包即可
+  sudo apt install textlive-fonts-extra
+
+这里是使用latex制作slices常用的包:
+
+  sudo apt install texlive-pictures
+  sudo apt install texlive-latex-extra
+  sudo apt install texlive-fonts-extra
+  sudo apt install texlive-publishers
+
+其它tex工具:
+
+  sudo apt install chktex
+
+
