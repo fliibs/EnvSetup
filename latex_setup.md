@@ -255,5 +255,7 @@ Control+Alt+B
 其它tex工具:
 
     sudo apt install chktex
+    sudo apt install texlive-extra-utils
+
 
 
