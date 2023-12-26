@@ -224,7 +224,7 @@ Control+Alt+B
 
 可以直接通过apt安装:
 
-  sudo apt install textlive
+  sudo apt install texlive
 
  
 
@@ -232,7 +232,7 @@ Control+Alt+B
 
 首先安装apt-file工具，这个工具会在可以安装的apt包中查找是否存在待搜索的文件:
 
-  sudo apt install
+  sudo apt install apt-file
 
 接下来，针对每个缺失的宏定义包:
 
