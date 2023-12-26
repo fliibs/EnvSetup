@@ -242,8 +242,8 @@ Control+Alt+B
   
     #上述命令输出:
     # texlive-fonts-extra: /usr/share/texlive/texmf-dist/tex/latex/ccicons/ccicons.sty  
-    #说明这个文件可以在"textlive-fonts-extra中找到，安装这个包即可
-    sudo apt install textlive-fonts-extra
+    #说明这个文件可以在"texlive-fonts-extra中找到，安装这个包即可
+    sudo apt install texlive-fonts-extra
 
 这里是使用latex制作slices常用的包:
 
