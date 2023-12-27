@@ -1,37 +1,80 @@
 # Latex Environment Setup
 *Let's setup a Latex environment!*
+## 1. Install texlive
+### 1.1 通过apt安装texlive-2022
+可以通过apt直接安装texlive:
+```shell
+sudo apt install texlive
+sudo apt install texlive-xetex
+sudo apt install latexmk
+```
+对于缺失的宏定义包，可以通过如下方法查找和安装:
 
-## 1.Install texlive-2023
+首先安装apt-file工具，这个工具会在可以安装的apt包中查找是否存在待搜索的文件:
 
-[texlive-2023 镜像地址](https://mirrors.tuna.tsinghua.edu.cn/CTAN/systems/texlive/Images/)
+    sudo apt install apt-file
 
-这里选择texlive-2023.iso就好了。以Linux或者wsl为例，对于wsl用户，不必将镜像文件移入wsl内，放在C盘下即可，即``` C:\texlive2023.iso```。
+接下来，针对每个缺失的宏定义包:
 
-## 2.校验镜像文件
+    # 例如报错为 "! LaTeX Error: File `ccicons.sty' not found."
+    # 则使用以下命令查找:
+    apt-file -x search '/ccicons.sty$'
+  
+    #上述命令输出:
+    # texlive-fonts-extra: /usr/share/texlive/texmf-dist/tex/latex/ccicons/ccicons.sty  
+    #说明这个文件可以在"texlive-fonts-extra中找到，安装这个包即可
+    sudo apt install texlive-fonts-extra
 
-在```texlive2023.iso```所在目录下，执行：
+这些是本模板需要使用的宏定义包：
+    sudo apt install texlive-latex-extra
+    sudo apt install texlive-fonts-extra
+    sudo apt install texlive-science
+    sudo apt install texlive-lang-chinese
+
+这里是使用latex制作slices常用的包:
+
+    sudo apt install texlive-pictures
+    sudo apt install texlive-latex-extra
+    sudo apt install texlive-fonts-extra
+    sudo apt install texlive-publishers
+
+其它tex工具:
+
+    sudo apt install chktex
+    sudo apt install texlive-extra-utils
+
+### ~~1.2 手动安装texlive-2023 (此安装方法弃用)~~
+#### ~~1.2.1 下载texlive-2023镜像~~
+
+~~[texlive-2023 镜像地址](https://mirrors.tuna.tsinghua.edu.cn/CTAN/systems/texlive/Images/)~~
+
+~~这里选择texlive-2023.iso就好了。以Linux或者wsl为例，对于wsl用户，不必将镜像文件移入wsl内，放在C盘下即可，即``` C:\texlive2023.iso```。~~
+
+#### ~~1.2.2校验镜像文件~~
+
+~~在```texlive2023.iso```所在目录下，执行：~~
 
 ```shell
 md5sum texlive2023.iso
 ```
-md5计算需要完整读取整个镜像文件，因此计算会持续一段时间，请耐心等待。你应该可以得到texlive2023镜像文件的md5值787f087e71695eebd1caafdb2b286060。
+~~md5计算需要完整读取整个镜像文件，因此计算会持续一段时间，请耐心等待。你应该可以得到texlive2023镜像文件的md5值787f087e71695eebd1caafdb2b286060。~~
 
-## 3.挂载镜像文件
+#### ~~1.2.3.挂载镜像文件~~
 
-打开wsl，在shell中执行：(原生Linux，需要把/mnt/d/texlive2023.iso换成对应的路径)
+~~打开wsl，在shell中执行：(原生Linux，需要把/mnt/d/texlive2023.iso换成对应的路径)~~
 ```shell
 sudo mkdir /mnt/texlive
 sudo mount /mnt/c/texlive2023.iso /mnt/texlive
 ```
-后续我们可以在/mnt/texlive中访问安装镜像内部的各种文件。
+~~后续我们可以在/mnt/texlive中访问安装镜像内部的各种文件。~~
 
-## 4.启动安装程序
+#### ~~1.2.4.启动安装程序~~
 
 ```shell
 sudo /mnt/texlive/install-tl
 ```
 
-将看到以下内容：
+~~将看到以下内容：~~
 
 ```shell
 ======================> TeX Live installation procedure <=====================
@@ -85,8 +128,8 @@ Enter command:
 
 ```
 
-## 5.调整安装配置
-在Enter command中输入```C```
+#### ~~1.2.5.调整安装配置~~
+~~在Enter command中输入```C```~~
 
 ```shell
 ===============================================================================
@@ -124,22 +167,22 @@ Actions: (disk space required: 5349 MB)
 Enter letter(s) to (de)select collection(s):
 
 ```
-然后输入```deghijkstuvwxyzABCEHIKLMNS```取消其他外语的支持，节省空间。
+~~然后输入```deghijkstuvwxyzABCEHIKLMNS```取消其他外语的支持，节省空间。~~
 
-确认无误后，输入R并回车，回到主界面。
+~~确认无误后，输入R并回车，回到主界面。~~
 
-## 6.安装
-输入```I```执行安装。
+#### ~~1.2.6.安装~~
+~~输入```I```执行安装。~~
 
-## 7.善后
+#### ~~1.2.7.善后~~
 
-将安装镜像弹出并删除/mnt/texlive文件夹：
+~~将安装镜像弹出并删除/mnt/texlive文件夹：~~
 ```shell
 sudo umount /mnt/texlive
 sudo rm -r /mnt/texlive
 ```
 
-修改~/.bashrc文件
+~~修改~/.bashrc文件~~
 ```shell
 # Add TeX Live to the PATH, MANPATH, INFOPATH
 export PATH=/usr/local/texlive/2023/bin/x86_64-linux:$PATH
@@ -147,18 +190,18 @@ export MANPATH=/usr/local/texlive/2023/texmf-dist/doc/man:$MANPATH
 export INFOPATH=/usr/local/texlive/2023/texmf-dist/doc/info:$INFOPATH
 ```
 
-保存并```source ~/.bashrc```，然后检查版本，看是否成功
+~~保存并```source ~/.bashrc```，然后检查版本，看是否成功~~
 ```shell
 tex -v
 ```
 
-刷新字体缓存
+~~刷新字体缓存~~
 ```shell
 sudo cp /usr/local/texlive/2023/texmf-var/fonts/conf/texlive-fontconfig.conf /etc/fonts/conf.d/09-texlive.conf
 sudo fc-cache -fsv
 ```
 
-## 8.VSCode插件下载和设置
+## 3.VSCode插件下载和设置
 目前装LaTeX WorkShop, LaTeX Utilities和LaTeX即可
 
 ![image](https://github.com/fliibs/EnvSetup/assets/66581448/f6a3a828-86b0-45b9-8968-76246be61ca3)
@@ -206,11 +249,11 @@ sudo fc-cache -fsv
 sudo apt-get install ttf-mscorefonts-installer
 ```
 
-## 9.LaTeX在线渲染
-### 9.1 手动
+## 4.LaTeX在线渲染
+### 4.1 手动
 ![image](https://github.com/fliibs/EnvSetup/assets/66581448/955d3323-4fd2-4ae5-baa8-d8672de4fd92)
 
-### 9.2 快捷键
+### 4.2 快捷键
 
 ```
 Control+Alt+B
@@ -219,43 +262,6 @@ Control+Alt+B
 ![image](https://github.com/fliibs/EnvSetup/assets/66581448/00014404-c45a-48e8-ac05-25d9c1e2c2e3)
 
 
-
-## apt安装和包的安装
-
-可以直接通过apt安装:
-
-  sudo apt install texlive
-
- 
-
-对于缺失的宏定义包，可以通过如下方法查找和安装:
-
-首先安装apt-file工具，这个工具会在可以安装的apt包中查找是否存在待搜索的文件:
-
-  sudo apt install apt-file
-
-接下来，针对每个缺失的宏定义包:
-
-    # 例如报错为 "! LaTeX Error: File `ccicons.sty' not found."
-    # 则使用一下命令查找:
-    apt-file -x search '/ccicons.sty$'
-  
-    #上述命令输出:
-    # texlive-fonts-extra: /usr/share/texlive/texmf-dist/tex/latex/ccicons/ccicons.sty  
-    #说明这个文件可以在"texlive-fonts-extra中找到，安装这个包即可
-    sudo apt install texlive-fonts-extra
-
-这里是使用latex制作slices常用的包:
-
-    sudo apt install texlive-pictures
-    sudo apt install texlive-latex-extra
-    sudo apt install texlive-fonts-extra
-    sudo apt install texlive-publishers
-
-其它tex工具:
-
-    sudo apt install chktex
-    sudo apt install texlive-extra-utils
 
 
 
