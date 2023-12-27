@@ -26,6 +26,7 @@ sudo apt install latexmk
     sudo apt install texlive-fonts-extra
 
 这些是本模板需要使用的宏定义包：
+
     sudo apt install texlive-latex-extra
     sudo apt install texlive-fonts-extra
     sudo apt install texlive-science
