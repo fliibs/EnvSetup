@@ -299,7 +299,16 @@
     ln -s /bin/bash /bin/sh
 
 # spyglass的安装
+  安装过程参考Synopsys EDA Tools\SpyGlass2016下的《SpyGlass2016.06安装破解教程》，执行spyglass -gui会报错：
 
+    spyglass: INTERNAL-ERROR, the VALUE OF `$SPYGLASS_HOME' (an internal variable) was not intuited correctly.
+    spyglass: The value guessed was: `SPYGLASS_HOME=/usr/synopsys/spyglass/SPYGLASS2017.12-SP2/SPYGLASS_HOME'
+    spyglass: INTERNAL-ERROR, the Perl 5 installation within `$SPYGLASS_HOME' could not be validated.
+    spyglass: A perl installation was expected at: `/usr/synopsys/spyglass/SPYGLASS2017.12-SP2/SPYGLASS_HOME/lib/multi-perl'
+    spyglass: either `$SPYGLASS_HOME' was guessed incorrectly or the installation is corrupted.
+    spyglass: NOTE, the caller's environment variable `$SPYGLASS_HOME' was ignored in this process.
+    
+  需要按这个博客 https://blog.csdn.net/qq_33589780/article/details/108720685 去修改standard-environment.sh和perl这两个文件，加上对Linux4的支持，但是还不够，Ubuntu的内核版本是5.x，所以像博客里面那样添加4的不能解决问题，按照 https://world.myfpga.cn/?id=277 里描述的去添加即可
 
 # 自动启动lic server
 
