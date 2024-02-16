@@ -308,7 +308,97 @@
     spyglass: either `$SPYGLASS_HOME' was guessed incorrectly or the installation is corrupted.
     spyglass: NOTE, the caller's environment variable `$SPYGLASS_HOME' was ignored in this process.
     
-  需要按这个博客 https://blog.csdn.net/qq_33589780/article/details/108720685 去修改standard-environment.sh和perl这两个文件，加上对Linux4的支持，但是还不够，Ubuntu的内核版本是5.x，所以像博客里面那样添加4的不能解决问题，按照 https://world.myfpga.cn/?id=277 里描述的去添加即可
+  需要按这个博客 https://blog.csdn.net/qq_33589780/article/details/108720685 去修改standard-environment.sh和perl这两个文件，加上对Linux4的支持，但是还不够，Ubuntu的内核版本是5.x，所以像博客里面那样添加4的不能解决问题，按照 https://world.myfpga.cn/?id=277 里描述的去修改：
+  1./SPYGLASS_HOME/lib/SpyGlass/standard-environment.sh：
+  between ";;" of Linux-3* block and "echo UNKNOWN ;;" add these codes to support linux-4 and linux-5
+  
+    Linux-4*)
+            if [ X"$switch32bit" = "Xyes" ]; then
+                echo "Linux2"
+            elif  [ X"$switch64bit" = "Xyes" ]; then
+                PROCNAME=`uname -p`
+                if [ "X$PROCNAME" = "Xunknown" ]; then
+                    PROCNAME=`uname -m`
+                fi
+                if [ X"$PROCNAME" = "Xx86_64" ]; then
+                    echo "Linux4"
+                else
+                    echo "Linux2"
+                fi
+            else
+                PROCNAME=`uname -p`
+                if [ "X$PROCNAME" = "Xunknown" ]; then
+                    PROCNAME=`uname -m`
+                fi
+                if [ X"$PROCNAME" = "Xx86_64" ]; then
+                    if [ X"$defExeOn64Bit" = "X32" ]; then
+                        echo "Linux2"
+                    else
+                        echo "Linux4"
+                    fi
+                else
+                    echo "Linux2"
+                fi
+            fi
+            ;;
+    Linux-5*)
+            if [ X"$switch32bit" = "Xyes" ]; then
+                echo "Linux2"
+            elif  [ X"$switch64bit" = "Xyes" ]; then
+                PROCNAME=`uname -p`
+                if [ "X$PROCNAME" = "Xunknown" ]; then
+                    PROCNAME=`uname -m`
+                fi
+                if [ X"$PROCNAME" = "Xx86_64" ]; then
+                    echo "Linux4"
+                else
+                    echo "Linux2"
+                fi
+            else
+                PROCNAME=`uname -p`
+                if [ "X$PROCNAME" = "Xunknown" ]; then
+                    PROCNAME=`uname -m`
+                fi
+                if [ X"$PROCNAME" = "Xx86_64" ]; then
+                    if [ X"$defExeOn64Bit" = "X32" ]; then
+                        echo "Linux2"
+                    else
+                        echo "Linux4"
+                    fi
+                else
+                    echo "Linux2"
+                fi
+            fi
+            ;;
+    *)             echo UNKNOWN ;;
+    esac
+    }
+  2.SpyGlass-L2016.06/perl/bin/perl
+  between ";;" of Linux-3* block and "*) echo "ERROR(perl): Unknown platform: $PLAT" 1>&2; exit 1;;" add these codes to support linux-4 and linux-5
+  
+      Linux-4*)      ##now we have Linux-64 bit also
+            PROCNAME=`uname -p`
+            if [ "X$PROCNAME" = "Xunknown" ]; then
+               PROCNAME=`uname -m`
+            fi
+            if [ X"$PROCNAME" = "Xx86_64" ]; then
+                       species=Linux4
+                    else
+                       species=Linux2
+                    fi
+              ;;
+     Linux-5*)      ##now we have Linux-64 bit also
+            PROCNAME=`uname -p`
+            if [ "X$PROCNAME" = "Xunknown" ]; then
+               PROCNAME=`uname -m`
+            fi
+            if [ X"$PROCNAME" = "Xx86_64" ]; then
+                       species=Linux4
+                    else
+                       species=Linux2
+                    fi
+              ;;
+  
 
 # 自动启动lic server
 
